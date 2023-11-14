@@ -18,14 +18,16 @@ The goal of this project was to predict the outcomes of individual top-level men
 * 'Player Past Performance Features'(n=329) was the largest class of predictive features. These features captured past performance on serve (total, 1st, and 2nd serve performance, break points saved, aces, double faults etc.) and return (same, but from the returner's perspective) and previous head-to-head player matchup statistics. As with the previous class, these features were derived in both Short-Term (previous 10 matches) and Long-Term (previous 60 matches) forms. Some features in this class isolated performance on the same surface between indoor and outdoor performance, though a given surface model (either clay court or hard court) included both indoor and outdoor matches on that surface. Also, a number of the features in this class were (the player 'Differential' of) ratios aimed at capturing player efficiencies (e.g., ace%/double fault%). Many other features in this class captured 'Offense vs Defense' (e.g., Player A Past Serve Points Won% - Player B Return Points Won%) or 'Defense vs Offense'.
 
 **Figure 1. Overview of Predictive Features By Class**
-![image](https://github.com/ursus-maritimus-714/Tennis-Prediction-Project/assets/90933302/246432e7-61d6-4b07-9b2a-f4dd3a87d115)
+![image](https://github.com/ursus-maritimus-714/Mens-Tennis-Prediction/assets/90933302/cb8259df-eab1-48fc-b4ae-006451860cec)
+
 
 
 
 **Figure 2** shows the feature generation workflow for the large majority of 'Player Past-Performance Features'. Most features in this class were time-decay weighted with continuous functions (e.g., for 'Long-Term' the immediately previous match to the predicted match was weighted 60, the one prior to that was weighted 59, down to a weight of 1 for the 60th match prior to the predicted match). These DTW features were then adjusted to account for both SOS faced by a player during the feature accrual time window and for tournament conditions (e.g., court speed) experienced during the same interval. Finally, the 'Differential' forms of each feature were generated from these DTW/SOS/TCA adjusted player-level features. One notable exception to the general time-weighting strategy was player fatigue, for which either accrual of time or total points played was considered over a 10 day period prior to the predicted match, with decay-weighting based on how many days ago a match was (as opposed to how many matches "ago").  
 
 **Figure 2. Overview of the Predictive Feature Generation Process**
-![image](https://github.com/ursus-maritimus-714/Tennis-Prediction-Project/assets/90933302/1d7060c6-83d0-40dc-b503-96878a6ac7ba)
+![image](https://github.com/ursus-maritimus-714/Mens-Tennis-Prediction/assets/90933302/61d9c0d9-304c-473e-b456-aa5515af47c1)
+
 
 
 
@@ -48,27 +50,29 @@ Also unless otherwise specified, models included completed matches played 2015-2
 
 **Figure 3. Best Model Prediction Quality vs Benchmark Models**
 
-![image](https://github.com/ursus-maritimus-714/Tennis-Prediction-Project/assets/90933302/ceb9e7f8-a87c-4a9d-b4d7-2aa6565ee2ee)
+![image](https://github.com/ursus-maritimus-714/Mens-Tennis-Prediction/assets/90933302/e46661e1-df2d-40c2-8a66-da5698d5b0ca)
+
+
 
 **2)** Hard court match outcomes were modeled more accurately than those on clay courts, even when adjusting for sample size differences across the two surfaces by reducing the number of hard court matches to equal the number of clay court matches. (**Fig. 4**) 
 
 **Figure 4. Best Model Prediction Quality By Surface**
 
-![image](https://github.com/ursus-maritimus-714/Tennis-Prediction-Project/assets/90933302/2dc29c9b-802d-4ad4-9f2b-99790bff6ce4)
+![image](https://github.com/ursus-maritimus-714/Mens-Tennis-Prediction/assets/90933302/48b450bc-05fd-4110-b66a-167c668fdb54)
 *For the 'Hard' and 'Hard + Clay' models (both surfaces included in the same model) in the "Equal Samples Per Surface" analysis, 25 modeling iterations with random subsets of hard court records (each for one player in a given predicted match) were averaged.*
 
 **3)** On both surfaces, best of 5 sets matches (ie, Grand Slam matches) were modeled with higher accuracy than were the best of 3 sets matches from the regular ATP tour, both for 'Best Model' and for the stringent market benchmark 'Closing IWP Model'. (**Fig. 5**)
 
 **Figure 5. Best Model Prediction Quality by Non-Grand Slam vs. Grand Slam Matches**
 
-![image](https://github.com/ursus-maritimus-714/Tennis-Prediction-Project/assets/90933302/1ce4ce25-4cb5-4715-8dc6-667b82b8b5fa)
+![image](https://github.com/ursus-maritimus-714/Mens-Tennis-Prediction/assets/90933302/3172b5d5-005d-4e8f-948c-56440972ffbe)
 *For this analysis, the modeling time range for both surfaces was expanded to include 2011-2019 in order to boost the number of best of 5 set matches (Grand Slam; GS). As a result, 'Best Model' for both surfaces in this analysis had a slightly lower mean training error than for the time ranges (2015-2019 and 2012-2019 for hard and clay court modeling, respectively) used to determine best model prediction quality per surface in the core analysis (see Fig. 4 and Supp. Fig. 2).* 
 
 **4)** 'Best Model' prediction quality continually improved for both surfaces as matches with increasingly large amounts of IWP movement from the opening to closing of pre-match wagering were removed, up until an inclusion threshold of ~3% (e.g., one player in a given match moved from 50% IWP at opening to 53% IWP at closing, with the other player moving in the other direction to 47% IWP). A similar trend was observed for the 'Closing IWP' model. (**Fig. 6**)
 
 **Figure 6. Best Model Prediction Quality By Opening to Closing IWP Movement Threshold**
 
-![image](https://github.com/ursus-maritimus-714/Tennis-Prediction-Project/assets/90933302/7f8dea65-c840-4c80-afa6-a931e38c1cf5)
+![image](https://github.com/ursus-maritimus-714/Mens-Tennis-Prediction/assets/90933302/1b5d45cd-1b88-483c-bcef-310295cf1949)
 *For this analysis, matches from 2012-2019 were included in the modeling stage for clay courts to increase the number of matches to a level more comparable to that of hard court modeling (2015-2019). See Supp. Fig. 1 for analysis of model prediction accuracy by surface as a function of time range inclusion. Opening-to-closing IWP movement was derived from Pinnacle Sports wagering lines. The sole input to the 'Closing IWP Model' for each surface was averaged (across a variable set of available sports books per match) closing IWP for matches still included at a given movement threshold (results were extremely similar to those obtained with Pinnacle Sports closing line-derived IWPs as the sole model input).*  
 
 
@@ -77,7 +81,7 @@ Also unless otherwise specified, models included completed matches played 2015-2
 
 **Figure 7. Best Model Prediction Quality By Tournament Match Round Inclusion**
 
-![image](https://github.com/ursus-maritimus-714/Tennis-Prediction-Project/assets/90933302/bde3ace7-e2c4-403e-8522-7e676946852c)
+![image](https://github.com/ursus-maritimus-714/Mens-Tennis-Prediction/assets/90933302/c5d54d68-4635-4352-bdfb-305af8e2d315)
 *Match inclusion criteria for 'Best Model', per surface, and calculation of 'Closing IWP Model' in Fig. 7A were the same as for Fig. 6 (see footnote to Fig. 6). Implied Win Probability (IWP) Δ in Fig. 7B is the mean per-surface change in IWP from opening to closing of wagering for Pinnacle Sports across all matches in the full modeling sample for a given round of play.*  
 
 
@@ -86,7 +90,7 @@ Also unless otherwise specified, models included completed matches played 2015-2
 
 **Figure 8. Effect on Model Prediction Quality of Removing Individual Feature Classes or Adjustments from the Best Hard Court Model**
 
-![image](https://github.com/ursus-maritimus-714/Tennis-Prediction-Project/assets/90933302/9cec624b-519d-4a75-ba42-3fa33d73b408)
+![image](https://github.com/ursus-maritimus-714/Mens-Tennis-Prediction/assets/90933302/bb3170ba-5f61-4253-8b28-b683b5a8a267)
 *Subtraction model variants with feature adjustment removals (hatched bars) were recomputed such that subsequently calculated adjustments (see Fig. 1) were calculated as in the best full model, though with previous adjustments in the workflow set to 1. For example, in the no Decay-Time Weighting subtraction model (hatched lavendar bar) strength of schedule (SOS) adjustment was conducted on features where every match (either in a long-term or short-term feature variant) was equally weighted.*
 
 # Discussion
@@ -105,27 +109,27 @@ As far as future improvements to this modeling approach, I am extremely interest
 # Supplementary Figures
 **Supplementary Figure 1. Effect of Time Range Inclusion on Best Model Accuracy** 
 
-![image](https://github.com/ursus-maritimus-714/Tennis-Prediction-Project/assets/90933302/5eca1f7a-410f-4ac2-86d5-99965a1dfbe6)
+![image](https://github.com/ursus-maritimus-714/Mens-Tennis-Prediction/assets/90933302/648638e2-3486-4ded-b33b-b9674016e23a)
 *'Best Model' was found for each surface separately for the time ranges 201X-2019. Each model always included at least 2 additional years of data for predictive feature accrual (e.g., the 2011-2019 model additionally had data from 2009-2010 included during feature generation). Model accuracy peaked with the inclusion of 2015-2019 (hard court) or 216-2019 (clay court). For clay court modeling, however, the standard deviation of the training error was substantially lower with the inclusion of a few more years of data. Thus the decision in the main results to mostly include 2012-2019 in the modeling stage, despite the fact that mean training error was higher with this expanded time range inclusion. On both surfaces, accuracy for a linear model with aggregate closing IWP as the sole input ('Closing IWP Model') outperformed, but largely tracked qualitatively with, 'Best Model' across the range of time inclusions evaluated.*
  
 **Supplementary Figure 2. Effect of Previous Matches Played Threshold on Best Model Accuracy**
 
-![image](https://github.com/ursus-maritimus-714/Tennis-Prediction-Project/assets/90933302/074251a2-c098-4127-ac15-46ea415f71e3)
+![image](https://github.com/ursus-maritimus-714/Mens-Tennis-Prediction/assets/90933302/6bf312a4-6ea2-4f07-b2d9-499000122475)
 *Best models were found, per surface, separately for a number of minimum previous matches played thresholds. For a match to be included at a given threshold, BOTH players must have played the minimum number of prior matches on that surface. The hard court model variants included matches for the years 2015-2019 (2009-2014 included during predictive feature generation for accrual). The clay court model variants included matches for the years 2012-2019 (2009-2011 included during predictive feature generation for accrual). Model accuracy on hard courts peaked at a very high minimum threshold (140 matches), though a threshold of 20 matches was selected for modeling because model accuracy was sufficiently high with very low standard deviation and inclusion of the large majority of the overall sample. For clay courts, model accuracy peaked with a threshold of 60 prior patches, though a 20 match threshold resulted in minimal standard deviation and acceptable accuracy while including over half of the overall sample. On both surfaces, accuracy for a linear model with aggregate closing IWP as the sole input ('Closing IWP Model') outperformed, but largely tracked qualitatively with, 'Best Model' across the range of thresholds evaluated.*
 
 **Supplementary Figure 3. Aggregate Match Statistics for Hard Court vs Clay Court Tennis**
 
-![image](https://github.com/ursus-maritimus-714/Tennis-Prediction-Project/assets/90933302/ef8c6154-8a97-4b5b-bcfb-80b791fc959a)
+![image](https://github.com/ursus-maritimus-714/Mens-Tennis-Prediction/assets/90933302/17813c7d-9792-48b9-b249-9ab03dc0c5e6)
 *For both surfaces, all matches played between players who BOTH had 20 previous same-surface matches in 2015-2019 were included. Taken together, these aggregate statistics demonstrate that the serve was more important over this time range to success on hard court than on clay courts (A-D). Additonally, and related to the relative importance of the serve to player success on hard courts, both Grand Slam (GS) and non-Grand Slam (non-GS) matches were shorter on clay courts than on hard courts (E-F).*  
 
 **Supplementary Figure 4. Hard Court Best Model Indoor vs Outdoor Matches**
 
-![image](https://github.com/ursus-maritimus-714/Tennis-Prediction-Project/assets/90933302/ace486fa-c0a0-4671-83c6-34455e8a212d)
+![image](https://github.com/ursus-maritimus-714/Mens-Tennis-Prediction/assets/90933302/27796379-f657-4273-b055-ed9c3b6b7f15)
 *For both the 2015-2019 (left panel) and 2011-2019 (right panel) model inclusion time ranges, all hard court matches played between players who BOTH had 20 previous same-surface matches in 2015-2019 were included. While, as was seen in the analysis summarized in Supp. Fig. 1, overall prediction quality is slightly lower with the expanded time range, inclusion of this time range allows a larger sample of relatively scarce indoor matches to be included. In this expanded time range analysis there is a suggestion (albeit still with a large amount of error) that indoor matches, which are played under "ideal" conditions and favor the server even more strongly than hard court matches overall, are more well predicted by both 'Best Model' and the "wisdom of the market" ('Closing IWP Model').* 
 
 
 **Supplementary Figure 5.  Aggregate Match Statistics for Outdoor Hard Court vs Indoor Hard Court Tennis**
 
-![image](https://github.com/ursus-maritimus-714/Tennis-Prediction-Project/assets/90933302/6456bd7a-61ff-4c3c-96a3-f4dc69e9f0db)
+![image](https://github.com/ursus-maritimus-714/Mens-Tennis-Prediction/assets/90933302/503a7e0e-70f9-4071-b4b0-19cdc06e42cd)
 *For both outdoor and indoor hard courts, all matches played between players who BOTH had 20 previous same-surface matches in 2015-2019 were included. Taken together, these aggregate statistics demonstrate that the serve was slightly more important over this time range to success on indoor hard courts than on outdoor hard courts (A-D). Additonally, and related to the relative premonidance of the serve on hard courts, non-Grand Slam (non-GS) matches were shorter on indoor hard courts than on outdoor hard courts (E).*
 
