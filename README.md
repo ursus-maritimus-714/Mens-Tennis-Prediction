@@ -1,5 +1,5 @@
 
-# Prediction of Match Outcomes in Men's Professional Tennis with Machine Learning 
+# Prediction of Match Outcomes in Men's Professional Tennis 
 
 
 ## Introduction
